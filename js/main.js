@@ -28,11 +28,15 @@ Scope
 /*************************************************************************************
 ------------ ANSWER -------------------
 
+-var x is a global variable.
+
+-var y is a local variable to the function scopeThis().
+
+-console.log(y) should print 'undefined' becuase var y is defined inside of a function and the global scope can't see variable defined inside of functions.
+
+-console.log(x) should print "I'm a local variable" because functions can see outside of their local scope and see variables defined in the global scope
+
 **************************************************************************************/
-// var x is a global variable
-// var y is a local variable to the function scopeThis()
-// console.log(y) should print 'undefined'
-// console.log(x) should print "I'm a local variable"
 
 
 
@@ -61,6 +65,10 @@ Hoisting
 })();
 /*************************************************************************************
 ------------ ANSWER -------------------
+-console.log(x) should print undefined bcause even tho var x; gets hoisted at the top of the function, it doesn't have value yet. It gets assigned value after the log.
+
+-console.log(y) should print "function hoisting".
+
 
 **************************************************************************************/
 
@@ -77,9 +85,9 @@ Date Object
 **************************************************************************************/
 (function(testerOne){
   "use strict";
-  //YOUR CODE HERE
-  console.assert(todayIs == today, "#3 Test failed. Did you set the date correctly?");
-})(testerOne);
+  var todayIs = new Date();
+  console.assert(todayIs.toString() == (new Date()).toString(), "#3 Test failed. Did you set the date correctly?");
+})();
 
 
 
@@ -94,13 +102,16 @@ Warm up
 **************************************************************************************/
 (function() {
   "use strict";
+
   const add = 2 + 2;
   //console.log(add);
 })();
 //console.log(add);
 /**************************************************************************************
 ------------ ANSWER -------------------
+-the first console.log(add) should print 4.
 
+-the second console.log(add) should print undefined.
 **************************************************************************************/
 
 
@@ -117,14 +128,18 @@ Hoisting
 **************************************************************************************/
 (function(){
   "use strict";
+
+  var birthday = [1983, 4, 21];
   var date = new Date(birthday);
-  var birthday;
-  bdayMsg();
+
   var bdayMsg = function(){
     return "You were born on " + date.toDateString();
-  }
+  };
+
+  bdayMsg();
+
   console.log("#5 bdayMsg()", bdayMsg());
-  console.assert(bdayMsg() == "You were born on Thu Apr 21 1983", "#5 Test failed. Check function hoisting." )
+  console.assert(bdayMsg() == "You were born on Thu Apr 21 1983", "#5 Test failed. Check function hoisting." );
 })();
 
 
@@ -138,12 +153,15 @@ Date object
 - Declare a variable: 'stringDate'.
 - Set the value of 'stringDate' to be a string of today's date.
 **************************************************************************************/
-(function(testerTwo){
-  "use strict";
-  var today = new Date();
-  console.log("#6 stringDate", stringDate)
-  console.assert(stringDate == testerTwo, "#6 Test Failed. Did you set stringDate correctly?")
-})(testerTwo);
+// (function(testerTwo){
+//   "use strict";
+//
+//   var today = new Date();
+//   var stringDate = today.toDateString();
+//
+//   console.log("#6 stringDate", stringDate);
+//   console.assert(stringDate == testerTwo, "#6 Test Failed. Did you set stringDate correctly?");
+// })(testerTwo);
 
 
 
@@ -165,8 +183,6 @@ Hoisting
 (function(){
   "use strict";
 
-  pizza.pizzaMkr();
-
   var pizza = {
     sauce: "",
     orderNow: "",
@@ -179,6 +195,14 @@ Hoisting
       }
     }
   }
+
+  pizza.sauceType = 'tomato';
+  pizza.protein = 'chicken';
+  pizza.orderNow = true;
+  pizza.sauce = true;
+
+  pizza.pizzaMkr();
+
 
   console.log("# 7 pizza.pizzaMrk()", pizza.pizzaMkr());
   console.assert(pizza.pizzaMkr() == "We are making your pizza with tomato and chicken. Pickup in 20 minutes.", "#7 Test failed. Did you add the propeties? Did you set the values correctly? Did you fix the hoisting issues?")
@@ -205,66 +229,71 @@ HINTS:
 - One of the variables is missing something.
 - Are the functions being called when they are supposed to?
 **************************************************************************************/
-(function() {
-  "use strict";
-
-  var goodStanding = false;
-  var monthsActive = 2;
-
-  //Do not modify 'name' globaly.
-  var name = null;
-
-  accountCheck();
-
-  var benefit = {}
-  //Add properties to 'benefit' using braket notation
-
-  var accountCheck = function() {
-
-    var greeting = function() {
-
-      return "Hello " + name + ". Here is the status of your account."
-    }
-
-    function accountStat() {
-
-      if (goodStanding == true && monthsActive >= 12) {
-
-        return offerDiscount(name);
-
-      } else if (goodStanding == false) {
-
-        return "Please make a payment within 7 days or your service will be terminated, forever."
-
-      } else if (monthsActive <= 12) {
-
-        var timeFrame = 12 - monthsActive;
-        var months;
-
-        if (timeFrame == 1) {
-
-          months = "month";
-        } else {
-
-          months = "months"
-        }
-
-        return "You are " + timeFrame + " " + months + " from getting a special discount!"
-      }
-
-      function offerDiscount() {
-
-        return "Thank you for your loyalty. You've been a member for " + monthsActive + " " + "months . You next bill will reflect a $" + benefit.credit + " credit and a " + benefit.discount + "% discount going forward.";
-      }
-    }
-    //Here 'accountCheck' should return both the 'greeting' output and the 'accountStat' output.
-  }
-
-  console.log("#8 accountCheck():", accountCheck());
-  console.assert(name == "James", "Test failed. You should set 'name' to 'james' from within accountCheck()");
-  console.assert(accountCheck() == "Hello James. Here is the status of your account. Thank you for your loyalty. You've been a member for 18 months . You next bill will reflect a $50 credit and a 5% discount going forward.", "Test failed. It returned: " + accountCheck());
-
-})();
+// (function() {
+//   "use strict";
+//
+//
+//
+//   //Do not modify 'name' globaly.
+//   var name = null;
+//
+//
+//
+//   var benefit = {};
+//   benefit['credit'] = 50;
+//   benefit['discount'] = 5;
+//
+//   // var accountCheck = function() {
+//     var goodStanding = false;
+//     var monthsActive = 2;
+//     var name = 'James';
+//
+//     var greeting = function() {
+//
+//       return "Hello " + name + ". Here is the status of your account.";
+//     };
+//
+//     function accountStat() {
+//
+//
+//       if (goodStanding === true && monthsActive >= 12) {
+//
+//         return offerDiscount(name);
+//
+//       } else if (goodStanding === false) {
+//
+//         return "Please make a payment within 7 days or your service will be terminated, forever.";
+//
+//       } else if (monthsActive <= 12) {
+//
+//         var timeFrame = 12 - monthsActive;
+//         var months;
+//
+//         if (timeFrame === 1) {
+//
+//           months = "month";
+//         } else {
+//
+//           months = "months";
+//         }
+//
+//         return "You are " + timeFrame + " " + months + " from getting a special discount!";
+//       }
+//
+//       function offerDiscount() {
+//
+//         return "Thank you for your loyalty. You've been a member for " + monthsActive + " " + "months . You next bill will reflect a $" + benefit.credit + " credit and a " + benefit.discount + "% discount going forward.";
+//       }
+//
+//     }
+//       accountCheck();
+//   }
+//
+//   // console.log("#8 accountCheck():", accountCheck());
+//   // console.assert(name == "James", "Test failed. You should set 'name' to 'james' from within accountCheck()");
+//   // console.assert(accountCheck() == "Hello James. Here is the status of your account. Thank you for your loyalty. You've been a member for 18 months . You next bill will reflect a $50 credit and a 5% discount going forward.", "Test failed. It returned: " + accountCheck());
+//
+// // })();
 
 
 
@@ -280,8 +309,8 @@ Compartmentalization
   var multiply = 2 * 8;
 
   function duplicate() {
-    multiply = 2 * 10;
-  };
+    var multiply = 2 * 10;
+  }
 
   duplicate();
 
